@@ -28,22 +28,21 @@ client.connect(err => {
 
   app.post('/addMeme', (req, res) => {
     const file = req.files.file;
-    const name = req.body.link;
-    const email = req.body.email;
+    const link = req.body.link;
     const newImg = file.data;
     const encImg = newImg.toString('base64');
 
     var image = {
-        contentType: file.mimetype,
-        size: file.size,
-        img: Buffer.from(encImg, 'base64')
+      contentType: file.mimetype,
+      size: file.size,
+      img: Buffer.from(encImg, 'base64')
     };
 
-    memeCollection.insertOne({ link, email, image })
-        .then(result => {
-            res.send(result.insertedCount > 0);
-        })
-})
+    memeCollection.insertOne({ link, image })
+      .then(result => {
+        res.send(result.insertedCount > 0);
+      })
+  })
 
   app.get('/memes', (req, res) => {
     memeCollection.find({})
